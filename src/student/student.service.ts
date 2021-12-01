@@ -7,12 +7,33 @@ import {
   UpdateStudentDto,
 } from './dto/student.dto';
 import { v4 as uuid } from 'uuid';
+import { gql } from '@apollo/client/core';
+import initializeApollo from 'lib/apollo';
 
 @Injectable()
 export class StudentService {
   private students = students;
 
+  getStudentData = async () => {
+    const client = initializeApollo();
+
+    const { data } = await client.query({
+      query: gql`
+        query fetchProducts {
+          products {
+            id
+            name
+            price
+          }
+        }
+      `,
+    });
+    console.log(data);
+  };
+
   getStudents(): FindStudentResponseDto[] {
+    console.log('sachin here2');
+    this.getStudentData();
     return this.students;
   }
 
